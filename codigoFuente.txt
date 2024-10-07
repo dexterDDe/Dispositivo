@@ -1,0 +1,89 @@
+package com.daisymerzario.miapp
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.daisymerzario.miapp.ui.theme.MiAppTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            MiApp2()
+        }
+    }
+
+    @Composable
+    fun MiApp2() {
+        var entrada by remember { mutableStateOf("") }
+        var etiqueta by remember { mutableStateOf("")  }
+
+        MaterialTheme {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Etiqueta(text = etiqueta)
+                    Entrada(value  = entrada, onValueChange = { entrada = it })
+                    Boton(onClick = {
+                        etiqueta = entrada
+                        entrada = ""
+                    })
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun Etiqueta(text: String) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+    }
+
+    @Composable
+    fun Entrada(value: String, onValueChange: (String) -> Unit) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text("Ingrese un texto") },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
+    @Composable
+    fun Boton(onClick: () -> Unit) {
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Cambiar Etiqueta")
+        }
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun MiApp2Preview() {
+        MiApp2Theme {
+            MiApp2()
+        }
+    }
+}
